@@ -38,6 +38,7 @@
   "build": {
     "appId": "com.rongcheng.shopmulti",
     "productName": "荣诚商家多开工具",
+    "publish": null, 
     "copyright": "Copyright © 2025 ${author}",
     "directories": {
       "output": "dist",
