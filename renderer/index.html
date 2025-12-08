@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荣诚多门店智能管理工具（支持外卖平台、电商平台、可定制开发,联系VX：llr3571）</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>荣诚多门店智能管理工具</h1>
+            
+            <!-- 用户信息容器 - 移动到右上角 -->
+            <div id="userInfoContainer" class="user-info"></div>
+            
+            <div class="header-actions">
+                <!-- 搜索框 -->
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索门店名称、联系人、电话...">
+                    <button id="searchBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                    <button id="clearSearchBtn" class="clear-search-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- 按钮区域 - 按新顺序排列 -->
+                <button id="addStoreBtn" class="btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>添加门店</span>
+                </button>
+                <button id="batchImportBtn" class="btn-secondary">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+    <polyline points="17 8 12 3 7 8"></polyline>
+    <line x1="12" y1="3" x2="12" y2="15"></line>
+  </svg>
+  <span>批量添加门店</span>
+</button>
+             
+                
+                <!-- 批量操作按钮将由JS动态添加 -->
+                
+                <div class="tool-buttons">
+                    <button id="importBtn" class="btn-secondary" title="导入数据">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>导入</span>
+                    </button>
+                    <button id="exportBtn" class="btn-secondary" title="导出数据">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>导出</span>
+                    </button>
+                    <!-- 在批量操作按钮附近添加 -->
+<button id="utilityToolsBtn" class="btn-secondary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+    </svg>
+    <span>实用工具</span>
+</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 平台选项卡区域 - 已添加筛选和操作按钮 -->
+        <div class="platform-tabs-container">
+            <div class="platform-tabs" id="platformTabs">
+                <button type="button" class="employee-filter" data-platform="all">全部门店</button>
+               
+            </div>
+        </div>
+
+        <main class="main-content">
+            <div class="stores-container" id="storesContainer">
+                <!-- 门店列表将由JavaScript动态生成 -->
+            </div>
+        </main>
+        
+        <!-- 添加/编辑门店模态框 -->
+        <div id="addStoreModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>添加门店</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+
+                    <!-- 同步和转移按钮区域 -->
+               
+                    
+                    <div class="form-group">
+    <label for="storeName">门店名称</label>
+    <input type="text" id="storeName" placeholder="输入门店名称" data-field="storeName">
+    <div class="input-error" id="storeNameError"></div>
+</div>
+<div class="form-group">
+    <label for="contactPerson">联系人</label>
+    <input type="text" id="contactPerson" placeholder="输入联系人姓名" data-field="contactPerson">
+    <div class="input-error" id="contactPersonError"></div>
+</div>
+<div class="form-group">
+    <label for="contactPhone">联系电话</label>
+    <input type="text" id="contactPhone" placeholder="输入联系电话" data-field="contactPhone">
+    <div class="input-error" id="contactPhoneError"></div>
+</div>
+ <div class="form-group">
+    <label>门店地址</label>
+    <div class="address-fields">
+        <input type="text" id="storeProvince" placeholder="省" data-field="storeProvince">
+        <input type="text" id="storeCity" placeholder="市" data-field="storeCity">
+    </div>
+    <div class="input-error" id="storeProvinceError"></div>
+    <div class="input-error" id="storeCityError"></div>
+</div>
+
+<div class="form-group">
+    <label>门店分类</label>
+    <select id="storeCategory" data-field="storeCategory">
+        <option value="">请选择分类</option>
+        <option value="快餐简餐">快餐简餐</option>
+        <option value="小吃">小吃</option>
+        <option value="地方菜">地方菜</option>
+        <option value="火锅">火锅</option>
+        <option value="烧烤">烧烤</option>
+        <option value="海鲜">海鲜</option>
+        <option value="全球美食">全球美食</option>
+        <option value="零售">零售</option>
+    </select>
+    <div class="input-error" id="storeCategoryError"></div>
+</div>               
+                    
+                    <div class="form-group">
+                        <label>选择平台</label>
+                        <div class="platform-selection-grid" id="platformSelectionGrid">
+                            <div class="platform-option" data-platform="美团">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/meituan.png" alt="美团" class="platform-icon">
+                                </div>
+                                <span class="platform-name">美团</span>
+                            </div>
+                            <div class="platform-option" data-platform="饿了么">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/eleme.png" alt="饿了么" class="platform-icon">
+                                </div>
+                                <span class="platform-name">饿了么</span>
+                            </div>
+                            <div class="platform-option" data-platform="京东">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/jd.png" alt="京东" class="platform-icon">
+                                </div>
+                                <span class="platform-name">京东</span>
+                            </div>
+                            
+                            <div class="platform-option" data-platform="饿了么零售">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/elemelingshou.png" alt="饿了么零售" class="platform-icon">
+                                </div>
+                                <span class="platform-name">饿了么零售</span>
+                            </div>
+                            <div class="platform-option" data-platform="淘宝">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/taobao.png" alt="淘宝" class="platform-icon">
+                                </div>
+                                <span class="platform-name">淘宝</span>
+                            </div>
+                            <div class="platform-option" data-platform="天猫">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/tmall.png" alt="天猫" class="platform-icon">
+                                </div>
+                                <span class="platform-name">天猫</span>
+                            </div>
+                            <div class="platform-option" data-platform="拼多多">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/pinduoduo.png" alt="拼多多" class="platform-icon">
+                                </div>
+                                <span class="platform-name">拼多多</span>
+                            </div>
+                            <div class="platform-option" data-platform="抖音电商">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/douyin.png" alt="抖音" class="platform-icon">
+                                </div>
+                                <span class="platform-name">抖音</span>
+                            </div>
+                            <div class="platform-option" data-platform="小红书">
+                                <div class="platform-icon-container">
+                                    <img src="../assets/xiaohongshu.png" alt="小红书" class="platform-icon">
+                                </div>
+                                <span class="platform-name">小红书</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button id="cancelAddBtn" class="btn-quxiao">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            <span>取消</span>
+                        </button>
+                        <button id="confirmAddBtn" class="btn-primary">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            <span>保存并打开</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- 批量导入模态框 -->
+<div id="batchImportModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>批量导入门店</h2>
+      <span class="close close-batch-import">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="import-steps">
+        <div class="step">
+          <h3>第一步：下载模板</h3>
+          <p>下载Excel模板文件，按照格式填写门店信息</p>
+          <button id="downloadTemplateBtn" class="btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>下载Excel模板</span>
+          </button>
+        </div>
+        
+        <div class="step">
+          <h3>第二步：导入Excel</h3>
+          <p>选择填写好的Excel文件进行导入</p>
+          <div class="file-upload">
+            <input type="file" id="excelFileInput" accept=".xlsx,.xls">
+            <button id="importExcelBtn" class="btn-primary" disabled>导入Excel</button>
+          </div>
+        </div>
+        
+        <div class="step">
+          <h3>第三步：登录</h3>
+          <p>关闭此页面，门店卡片打开后台，首次登陆可能需要验证码</p>
+          <button id="autoLoginBtn"  disabled>
+            
+          </button>
+        </div>
+      </div>
+      
+      <div id="loginProgress"  style="display: none;">
+        <div class="progress-bar">
+          <div id="progressBar" class="progress"></div>
+        </div>
+        <div id="progressText" class="progress-text"></div>
+      </div>
+      
+      <div id="loginResults" class="login-results"></div>
+    </div>
+  </div>
+</div>
+        <!-- 导入数据模态框 -->
+        <div id="importModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>导入数据</h2>
+                    <span class="close-import">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+    <label for="importData">粘贴导出的JSON数据</label>
+    <textarea id="importData" rows="10" placeholder="在此粘贴导出的JSON数据..." data-field="importData"></textarea>
+    <div class="input-error" id="importDataError"></div>
+</div>
+                    <div class="form-actions">
+                        <button id="cancelImportBtn" class="btn-quxiao">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            <span>取消</span>
+                        </button>
+                        <button id="confirmImportBtn" class="btn-primary">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>导入</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 批量操作模态框 -->
+        <div id="batchModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>批量操作</h2>
+                    <span class="close-batch">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="batch-selection-info">
+                        <p>已选择 <span id="batchSelectedCount">0</span> 个门店</p>
+                    </div>
+                    
+                    <div class="batch-actions">
+                        <button id="batchDeleteBtn" class="btn-danger">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                            <span>批量删除</span>
+                        </button>
+                        
+                        <button id="batchTransferBtn" class="btn-secondary">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                            </svg>
+                            <span>批量转移</span>
+                        </button>
+                        
+                        <button id="batchShareBtn" class="share-store">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                            </svg>
+                            <span>批量共享</span>
+                        </button>
+                        
+                        <button id="batchCancelBtn" class="btn-quxiao">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                            <span>取消</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 实用工具模态框 -->
+<div id="utilityToolsModal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+        <div class="modal-header">
+            <h2>实用工具</h2>
+            <span class="close-utility">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="utility-actions">
+                <button id="addCustomToolBtn" class="btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>添加自定义工具</span>
+                </button>
+            </div>
+            
+            <div class="tools-container" id="toolsContainer">
+                <!-- 预设工具和自定义工具卡片将在这里动态生成 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加自定义工具模态框 -->
+<div id="addToolModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>添加自定义工具</h2>
+            <span class="close-add-tool">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="toolName">工具名称</label>
+                <input type="text" id="toolName" placeholder="输入工具名称">
+                <div class="input-error" id="toolNameError"></div>
+            </div>
+            <div class="form-group">
+                <label for="toolUrl">工具网址</label>
+                <input type="url" id="toolUrl" placeholder="https://example.com">
+                <div class="input-error" id="toolUrlError"></div>
+            </div>
+            <div class="form-group">
+                <label for="toolDescription">工具描述 (可选)</label>
+                <textarea id="toolDescription" placeholder="简要描述这个工具的用途..." rows="3"></textarea>
+            </div>
+            <div class="form-actions">
+                <button id="cancelAddToolBtn" class="btn-quxiao">取消</button>
+                <button id="confirmAddToolBtn" class="btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+<script src="utils.js"></script>
+    <script src="renderer.js"></script>
+    
+</body>
+</html>

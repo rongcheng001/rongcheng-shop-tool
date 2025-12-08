@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荣诚商家多开数据驾驶舱</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 头部 -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1 class="dashboard-title">
+                    <span class="title-icon">📊</span>
+                    门店数据可视化系统
+                </h1>
+                <div class="header-actions">
+                    <button id="refreshBtn" class="btn-refresh">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M23 4v6h-6M1 20v-6h6"></path>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        刷新
+                    </button>
+                    <div class="last-update" id="lastUpdate">--</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 核心指标 - 紧凑布局 -->
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    </svg>
+                </div>
+                <div class="metric-content">
+                    <div class="metric-value" id="totalStores">0</div>
+                    <div class="metric-label">门店总数</div>
+                    <div class="metric-trend">
+                        <span class="trend-text">今日+<span id="todayNewStores">0</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="metric-content">
+                    <div class="metric-value" id="totalUsers">0</div>
+                    <div class="metric-label">用户总数</div>
+                    <div class="metric-trend">
+                        <span class="trend-text">活跃用户</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                </div>
+                <div class="metric-content">
+                    <div class="metric-value" id="activeStores">0</div>
+                    <div class="metric-label">活跃门店</div>
+                    <div class="metric-trend">
+                        <span class="trend-text">近7天</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                    </svg>
+                </div>
+                <div class="metric-content">
+                    <div class="metric-value" id="growthRate">0%</div>
+                    <div class="metric-label">季度增长</div>
+                    <div class="metric-trend">
+                        <span class="trend-text">近90天</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 动态数据展示 -->
+        <section class="activity-card">
+            <div class="activity-header">
+                <h3>📈 最近动态</h3>
+                <span class="last-update">实时</span>
+            </div>
+            <div class="activity-list">
+                <div class="activity-scroll" id="activityScroll">
+                    <!-- 动态内容将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 图表区域 - 三列布局 -->
+        <section class="charts-grid-three-column">
+            <!-- 第一列：用户排行和地区分布（上下排列，宽度缩小一半） -->
+            <div class="first-column">
+                <!-- 用户门店排行 -->
+                <div class="chart-card half-width">
+                    <div class="chart-header">
+                        <h3>用户排行(Top5)</h3>
+                        <div class="chart-actions">
+                            <button class="chart-btn active" data-chart="userRanking" data-type="bar">柱状</button>
+                            <button class="chart-btn" data-chart="userRanking" data-type="list">列表</button>
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <div id="userRankingChart" class="chart-container"></div>
+                    </div>
+                </div>
+
+                <!-- 地区分布 -->
+                <div class="chart-card half-width">
+                    <div class="chart-header">
+                        <h3>地区分布(Top5)</h3>
+                        <div class="chart-actions">
+                            <button class="chart-btn active" data-chart="region" data-type="bar">排行</button>
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <div id="regionChart" class="chart-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第二列：平台分布（正方形，宽度1/3，高度两行） -->
+            <div class="chart-card square-card">
+                <div class="chart-header">
+                    <h3>平台分布</h3>
+                    <div class="chart-actions">
+                        <button class="chart-btn active" data-chart="platform" data-type="doughnut">环形</button>
+                        <button class="chart-btn" data-chart="platform" data-type="pie">饼图</button>
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <div id="platformChart" class="chart-container"></div>
+                </div>
+            </div>
+
+            <!-- 第三列：分类分布（正方形，宽度高度与平台分布一样） -->
+<div class="chart-card square-card">
+    <div class="chart-header">
+        <h3>分类分布</h3>
+        <div class="chart-actions">
+            <button class="chart-btn active" data-chart="category" data-type="pie">饼图</button> 
+            <button class="chart-btn" data-chart="category" data-type="verticalBar">垂直条形</button> 
+        </div>
+    </div>
+    <div class="chart-content">
+        <div id="categoryChart" class="chart-container"></div>
+    </div>
+</div>
+        </section>
+
+        <!-- 时间趋势（宽卡，跨三列） -->
+        <section class="chart-card wide-card">
+            <div class="chart-header">
+                <h3>时间趋势-各平台新增门店</h3>
+                <div class="chart-actions">
+                    <button class="chart-btn active" data-chart="timeTrend" data-period="three_days">近三天</button>
+                    <button class="chart-btn" data-chart="timeTrend" data-period="one_week">近一周</button>
+                    <button class="chart-btn" data-chart="timeTrend" data-period="one_month">近一月</button>
+                    <button class="chart-btn" data-chart="timeTrend" data-period="three_months">近三月</button>
+                </div>
+            </div>
+            <div class="chart-content">
+                <div id="timeTrendChart" class="chart-container"></div>
+            </div>
+        </section>
+
+        <!-- 加载动画 -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <p>加载中...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

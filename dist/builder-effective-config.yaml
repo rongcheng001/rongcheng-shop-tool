@@ -1,0 +1,40 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.rongcheng.shopmulti
+productName: 荣诚商家多开工具
+copyright: Copyright © 2025 ${author}
+asar: true
+compression: maximum
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  icon: assets/icon.icns
+  hardenedRuntime: true
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  gatekeeperAssess: false
+  category: public.app-category.business
+win:
+  target: nsis
+  icon: assets/icon.ico
+  requestedExecutionLevel: highestAvailable
+files:
+  - filter:
+      - main.js
+      - preload.js
+      - renderer/**/*
+      - assets/**/*
+      - node_modules/**/*
+      - package.json
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  installerIcon: assets/icon.ico
+  uninstallerIcon: assets/icon.ico
+  license: LICENSE.txt
+  artifactName: ${productName}-${version}-${arch}-setup.exe
+electronVersion: 22.3.27

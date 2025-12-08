@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- 基础权限：允许应用正常运行 -->
+  <key>com.apple.security.app-sandbox</key>
+  <true/>
+  <key>com.apple.security.network.client</key>
+  <true/> <!-- 允许网络请求（核心：门店登录、接口调用必需） -->
+  
+  <!-- 本地文件访问权限（适配会话数据、Excel导入导出） -->
+  <key>com.apple.security.files.user-selected.read-write</key>
+  <true/> <!-- 允许用户选择文件（Excel模板下载、数据导入导出） -->
+  <key>com.apple.security.files.downloads.read-write</key>
+  <true/> <!-- 允许访问下载文件夹（模板下载默认路径） -->
+  
+  <!-- Electron 必需权限 -->
+  <key>com.apple.security.cs.allow-jit</key>
+  <true/> <!-- 允许即时编译（适配页面渲染、JS执行） -->
+  <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+  <true/> <!-- 允许无签名可执行内存（避免UA设置、会话操作报错） -->
+  <key>com.apple.security.cs.disable-library-validation</key>
+  <true/> <!-- 禁用库验证（兼容第三方依赖） -->
+  
+  <!-- 剪贴板权限（适配门店操作中复制粘贴） -->
+  <key>com.apple.security.clipboard.read-write</key>
+  <true/>
+</dict>
+</plist>
