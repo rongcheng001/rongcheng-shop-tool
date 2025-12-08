@@ -1,55 +1,52 @@
 {
-  "name": "荣诚商家多开工具",
-  "version": "2.0.0",
-  "description": "",
+  "name": "rongcheng-waimai-tool",
+  "version": "3.0.10",
+  "description": "荣诚多门店智能管理工具 - 支持多平台门店管理和数据驾驶舱",
   "main": "main.js",
   "scripts": {
+    "prebuild": "node build.js",
+    "build": "electron-builder",
+    "postbuild": "git checkout -- main.js",
     "start": "electron .",
+    "dev": "set NODE_ENV=development && electron .",
+    "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "npm run prebuild && electron-builder",
+    "backup": "node backup-restore.js backup",
+    "restore": "node backup-restore.js restore"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "electron-log": "^5.1.5",
-    "electron-store": "^8.1.0",
-    "electron-updater": "^6.1.7",
-    "fs-extra": "^11.2.0",
-    "joi": "^17.13.3",
+    "@electron-toolkit/utils": "^4.0.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.0.0",
+    "joi": "^18.0.1",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^2.7.0",
     "node-schedule": "^2.1.1",
-    "playwright-chromium": "^1.45.1",
-    "puppeteer-core": "^22.13.1",
-    "tree-kill": "^1.2.2"
+    "playwright-chromium": "^1.55.1",
+    "puppeteer-core": "^24.22.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "electron": "^22.3.27",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.0.0"
   },
   "build": {
-    "productName": "荣诚商家多开工具",
-    "appId": "com.rongcheng.tool",
-    "asar": true,
+    "appId": "com.rongcheng.waimai",
+    "productName": "荣诚多门店智能管理工具",
+    "copyright": "Copyright © 2025 荣诚工作室",
     "directories": {
-      "output": "release"
+      "output": "dist",
+      "buildResources": "assets"
     },
-    "mac": {
-      "hardenedRuntime": true,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist",
-      "gatekeeperAssess": false,
-      "category": "public.app-category.utilities",
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
-      ]
-    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
     "win": {
       "target": [
         {
@@ -59,14 +56,49 @@
             "ia32"
           ]
         }
-      ]
+      ],
+      "icon": "assets/icon.ico",
+      "publisherName": "荣诚科技"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "perMachine": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "shortcutName": "荣诚多门店智能管理工具"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.business"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png",
+      "category": "Office"
+    },
+    "extraMetadata": {
+      "SUPABASE_URL": "${SUPABASE_URL}",
+      "SUPABASE_ANON_KEY": "${SUPABASE_ANON_KEY}",
+      "SUPABASE_SERVICE_KEY": "${SUPABASE_SERVICE_KEY}",
+      "ENCRYPTION_KEY": "${ENCRYPTION_KEY}"
     }
-  }
+  },
+  "keywords": [
+    "外卖",
+    "多开",
+    "商家后台",
+    "门店管理",
+    "数据驾驶舱",
+    "electron"
+  ],
+  "author": {
+    "name": "荣诚信息服务",
+    "email": "support@rongcheng.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rongcheng/waimai-tool.git"
+  },
+  "license": "MIT"
 }
