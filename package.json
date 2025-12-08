@@ -1,84 +1,87 @@
 {
-  "名称": "荣成商店多功能工具","name": "rongcheng-shop-multi-tool",
-  "版本": "1.0.0""version": "1.0.0",
-  "description": "荣诚商家后台多开工具 - 支持美团/饿了么等9大平台门店批量管理""description": "荣诚商家后台多开工具 - 支持美团/饿了么等9大平台门店批量管理",
-  "main": "main.js","main": "main.js",
-  "作者": "荣诚科技","author": "荣诚科技",
-  "许可证": "MIT""license": "MIT",
-  "私有": true,"private": true,
-  "脚本": {"scripts": {
-    "start": "electron .""start": "electron .",
-    "dev": "electron . --dev""dev": "electron . --dev",
-    "build:win": "electron-builder --win --x64","build:win": "electron-builder --win --x64",
-    "build:mac": "electron-builder --mac --x64 --arm64","build:mac": "electron-builder --mac --x64 --arm64",
-    "build:all": "electron-builder --win --mac --x64 --arm64","build:all": "electron-builder --win --mac --x64 --arm64",
-    "pack:mac": "electron-builder --mac --dir""pack:mac": "electron-builder --mac --dir",
-    "清理": "rm -rf dist && rm -rf node_modules/.cache""clean": "rm -rf dist && rm -rf node_modules/.cache"
-  }},
-  "electronDownload": {"electronDownload": {
-    "mirror": "https://npmmirror.com/mirrors/electron/","mirror": "https://npmmirror.com/mirrors/electron/",
-    "平台": "darwin","platform": "darwin",
-    "arch": ["x64", "arm64"]"arch": ["x64", "arm64"]
-  }},
-  "依赖项": {"dependencies": {
-    "electron-store": "^8.1.0","electron-store": "^8.1.0",
-    "axios": "^1.6.8","axios": "^1.6.8",
-    " crypto-js " : " ^4.2.0 ""crypto-js": "^4.2.0",
-    "@supabase/supabase-js": "^2.42.0","supabase-js": "^2.42.0",
-    "exceljs": "^4.4.0","exceljs": "^4.4.0",
-    "uuid": "^9.0.1","uuid": "^9.0.1",
-    "electron-window-state": "^5.0.3""electron-window-state": "^5.0.3"
-  }},
-  "devDependencies": {"devDependencies": {
-    "electron": "^28.2.0","electron": "^28.2.0",
-    "electron-builder": "^24.13.3","electron-builder": "^24.13.3",
-    "asar": "^3.2.0","asar": "^3.2.0",
-    "electron-reloader": "^1.2.3""electron-reloader": "^1.2.3"
-  }},
-  "build": {"build": {
-    "appId": "com.rongcheng.shopmulti","appId": "com.rongcheng.shopmulti",
-    "productName": "荣诚商家多开工具","productName": "荣诚商家多开工具",
-    "版权所有": "版权所有 © 2025 ${author}","copyright": "Copyright © 2025 ${author}",
-    "directories": {"directories": {
-      "输出": "dist""output": "dist",
-      "buildResources": "build""buildResources": "build"
-    }},
-    "asar": true,"asar": true,
-    "压缩": "最大","compression": "maximum",
-    "mac": {"mac": {
-      "目标": ["target": [
-        {{
-          "目标": "伤害","target": "dmg",
-          "arch": ["x64", "arm64"]"arch": ["x64", "arm64"]
-        }}
-      ]],
-      "icon": "assets/icon.icns","icon": "assets/icon.icns",
-      "hardenedRuntime": true,"hardenedRuntime": true,
-      "entitlements": "build/entitlements.mac.plist","entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist","entitlementsInherit": "build/entitlements.mac.plist",
-      "gatekeeperAssess": false,"gatekeeperAssess": false,
-      "category": "public.app-category.business""category": "public.app-category.business"
-    }},
-    "win": {"win": {
-      "目标": "nsis""target": "nsis",
-      "icon": "assets/icon.ico","icon": "assets/icon.ico",
-      "请求执行级别": "最高可用""requestedExecutionLevel": "highestAvailable"
-    }},
-    "files": ["files": [
-      "main.js""main.js",
-      "preload.js""preload.js",
-      "renderer/**/*""renderer/**/*",
-      "资产/**/*""assets/**/*",
-      "node_modules/**/*""node_modules/**/*",
-      "package.json""package.json"
-    ]],
-    "nsis": {"nsis": {
-      "oneClick": false,"oneClick": false,
-      "允许更改安装目录": true,"allowToChangeInstallationDirectory": true,
-      "installerIcon": "assets/icon.ico","installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico","uninstallerIcon": "assets/icon.ico",
-      "许可协议": "LICENSE.txt""license": "LICENSE.txt",
-      "artifactName": "${productName}-${version}-${arch}-setup.exe""artifactName": "${productName}-${version}-${arch}-setup.exe"
-    }}
+  "name": "rongcheng-shop-multi-tool",
+  "version": "1.0.0",
+  "description": "荣诚商家后台多开工具 - 支持美团/饿了么等9大平台门店批量管理",
+  "main": "main.js",
+  "author": "荣诚科技",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build:win": "electron-builder --win --x64",
+    "build:mac": "electron-builder --mac --x64 --arm64",
+    "build:all": "electron-builder --win --mac --x64 --arm64",
+    "pack:mac": "electron-builder --mac --dir",
+    "clean": "rm -rf dist && rm -rf node_modules/.cache"
+  },
+  "electronDownload": {
+    "mirror": "https://npmmirror.com/mirrors/electron/",
+    "platform": "darwin",
+    "arch": ["x64", "arm64"]
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "axios": "^1.6.8",
+    "crypto-js": "^4.2.0",
+    "@supabase/supabase-js": "^2.42.0",
+    "exceljs": "^4.4.0",
+    "uuid": "^9.0.1",
+    "electron-window-state": "^5.0.3"
+  },
+  "devDependencies": {
+    "electron": "^28.2.0",
+    "electron-builder": "^24.13.3",
+    "asar": "^3.2.0",
+    "electron-reloader": "^1.2.3"
+  },
+  "build": {
+    "appId": "com.rongcheng.shopmulti",
+    "productName": "荣诚商家多开工具",
+    "copyright": "Copyright © 2025 ${author}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "asar": true,
+    "compression": "maximum",
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "assets/icon.icns",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "gatekeeperAssess": false,
+      "category": "public.app-category.business"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico",
+      "requestedExecutionLevel": "highestAvailable"
+    },
+    "mac": { "mac": {"files": [
+      "目标": ["target": ["main.js",
+        输入：         {{"preload.js",
+          "目标": "伤害", "target": "dmg","renderer/**/*",
+          "arch": ["x64", "arm64"]
+"assets/**/*",
+        输入的文本为空，没有可显示的内容。"node_modules/**/*",
+      ]]]"package.json"
+      "icon": "assets/icon.icns","icon": "assets/icon.icns",],
+      "硬化的运行时": true,"硬化的运行时": true,"nsis": {
+      "entitlements": "build/entitlements.mac.plist","entitlements": "build/entitlements.mac.plist","oneClick": false,
+      "entitlementsInherit": "build/entitlements.mac.plist",
+"entitlementsInherit": "build/entitlements.mac.plist","allowToChangeInstallationDirectory": true,
+      "gatekeeperAssess": false,
+"gatekeeperAssess": false,"installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "license": "LICENSE.txt",
+      "artifactName": "${productName}-${version}-${arch}-setup.exe"
+    }
   }
-}
+        }
