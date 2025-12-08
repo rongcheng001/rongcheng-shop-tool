@@ -24,7 +24,7 @@
     "electron-store": "^8.1.0",
     "axios": "^1.6.8",
     "crypto-js": "^4.2.0",
-    "@supabase/supabase-js": "^2.42.0",
+    "@supabase/supabase-js": "^2.0.0",
     "exceljs": "^4.4.0",
     "uuid": "^9.0.1",
     "electron-window-state": "^5.0.3"
@@ -64,24 +64,21 @@
       "icon": "assets/icon.ico",
       "requestedExecutionLevel": "highestAvailable"
     },
-    "mac": { "mac": {"files": [
-      "目标": ["target": ["main.js",
-        输入：         {{"preload.js",
-          "目标": "伤害", "target": "dmg","renderer/**/*",
-          "arch": ["x64", "arm64"]
-"assets/**/*",
-        输入的文本为空，没有可显示的内容。"node_modules/**/*",
-      ]]]"package.json"
-      "icon": "assets/icon.icns","icon": "assets/icon.icns",],
-      "硬化的运行时": true,"硬化的运行时": true,"nsis": {
-      "entitlements": "build/entitlements.mac.plist","entitlements": "build/entitlements.mac.plist","oneClick": false,
-      "entitlementsInherit": "build/entitlements.mac.plist",
-"entitlementsInherit": "build/entitlements.mac.plist","allowToChangeInstallationDirectory": true,
-      "gatekeeperAssess": false,
-"gatekeeperAssess": false,"installerIcon": "assets/icon.ico",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
       "uninstallerIcon": "assets/icon.ico",
       "license": "LICENSE.txt",
       "artifactName": "${productName}-${version}-${arch}-setup.exe"
     }
   }
-        }
+}
