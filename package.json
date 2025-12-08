@@ -1,86 +1,127 @@
 {
-  "name": "rongcheng-shop-multi-tool",
+  "name": "多门店智能管理工具",
   "version": "1.0.0",
-  "description": "荣诚商家后台多开工具 - 支持美团/饿了么等9大平台门店批量管理",
+  "description": "多平台外卖门店智能管理工具",
   "main": "main.js",
-  "author": "荣诚科技",
-  "license": "MIT",
-  "private": true,
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --dev",
-    "build:win": "electron-builder --win --x64",
-    "build:mac": "electron-builder --mac --x64 --arm64",
-    "build:all": "electron-builder --win --mac --x64 --arm64",
-    "pack:mac": "electron-builder --mac --dir",
-    "clean": "rm -rf dist && rm -rf node_modules/.cache"
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build:mac": "electron-builder --mac",
+    "build:mac:universal": "electron-builder --mac universal",
+    "build:mac:arm64": "electron-builder --mac --arm64",
+    "build:mac:intel": "electron-builder --mac --x64",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
-  "electronDownload": {
-    "mirror": "https://npmmirror.com/mirrors/electron/",
-    "platform": "darwin",
-    "arch": ["x64", "arm64"]
+  "keywords": [
+    "外卖管理",
+    "门店管理",
+    "多平台",
+    "electron"
+  ],
+  "author": "荣诚科技",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "cross-env": "^7.0.3"
   },
   "dependencies": {
-    "electron-store": "^8.1.0",
-    "axios": "^1.6.8",
-    "crypto-js": "^4.2.0",
-    "@supabase/supabase-js": "^2.0.0",
-    "exceljs": "^4.4.0",
-    "joi": "^17.13.3", 
-    "uuid": "^9.0.1",
-    "electron-window-state": "^5.0.3"
-  },
-  "devDependencies": {
-    "electron": "^28.2.0",
-    "electron-builder": "^24.13.3",
-    "asar": "^3.2.0",
-    "electron-reloader": "^1.2.3"
+    "@electron-toolkit/utils": "^3.0.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "bcryptjs": "^2.4.3",
+    "joi": "^17.11.0",
+    "node-cache": "^5.1.2",
+    "xlsx": "^0.18.5",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^2.6.7",
+    "crypto": "^1.0.1"
   },
   "build": {
-    "appId": "com.rongcheng.shopmulti",
-    "productName": "荣诚商家多开工具",
-    "publish": null, 
-    "copyright": "Copyright © 2025 ${author}",
+    "appId": "com.canyueduo.storemanager",
+    "productName": "多门店智能管理工具",
+    "copyright": "Copyright © 2024 餐悦科技",
     "directories": {
       "output": "dist",
       "buildResources": "build"
     },
-    "asar": true,
-    "compression": "maximum",
+    "files": [
+      "**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    ],
     "mac": {
+      "category": "public.app-category.business",
+      "icon": "assets/icon.icns",
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
-      "icon": "assets/icon.icns",
-      "hardenedRuntime": true,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
+      "hardenedRuntime": true,
       "gatekeeperAssess": false,
-      "category": "public.app-category.business"
+      "type": "distribution",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
-    "win": {
-      "target": "nsis",
-      "icon": "assets/icon.ico",
-      "requestedExecutionLevel": "highestAvailable"
+    "dmg": {
+      "sign": false,
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "background": "build/background.png"
     },
-    "files": [
-      "main.js",
-      "preload.js",
-      "renderer/**/*",
-      "assets/**/*",
-      "node_modules/**/*",
-      "package.json"
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/@supabase/supabase-js/**/*",
+      "node_modules/xlsx/**/*",
+      "node_modules/bcryptjs/**/*"
     ],
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
-      "license": "LICENSE.txt",
-      "artifactName": "${productName}-${version}-${arch}-setup.exe"
+    "npmRebuild": false,
+    "nodeGypRebuild": false,
+    "electronDownload": {
+      "mirror": "https://npmmirror.com/mirrors/electron/"
     }
-  }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/YOUR_REPO_NAME#readme"
 }
