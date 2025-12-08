@@ -1,85 +1,72 @@
 {
-  "name": "rongcheng-shop-multi-tool",
-  "version": "1.0.0",
-  "description": "荣诚商家后台多开工具 - 支持美团/饿了么等9大平台门店批量管理",
+  "name": "荣诚商家多开工具",
+  "version": "2.0.0",
+  "description": "",
   "main": "main.js",
-  "author": "荣诚科技",
-  "license": "MIT",
-  "private": true,
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --dev",
-    "build:win": "electron-builder --win --x64",
-    "build:mac": "electron-builder --mac --x64 --arm64",
-    "build:all": "electron-builder --win --mac --x64 --arm64",
-    "pack:mac": "electron-builder --mac --dir",
-    "clean": "rm -rf dist && rm -rf node_modules/.cache"
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "electronDownload": {
-    "mirror": "https://npmmirror.com/mirrors/electron/",
-    "platform": "darwin",
-    "arch": ["x64", "arm64"]
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "electron-log": "^5.1.5",
     "electron-store": "^8.1.0",
-    "axios": "^1.6.8",
-    "crypto-js": "^4.2.0",
-    "@supabase/supabase-js": "^2.0.0",
-    "exceljs": "^4.4.0",
-    "uuid": "^9.0.1",
-    "electron-window-state": "^5.0.3"
+    "electron-updater": "^6.1.7",
+    "fs-extra": "^11.2.0",
+    "joi": "^17.13.3",
+    "node-schedule": "^2.1.1",
+    "playwright-chromium": "^1.45.1",
+    "puppeteer-core": "^22.13.1",
+    "tree-kill": "^1.2.2"
   },
   "devDependencies": {
-    "electron": "^28.2.0",
-    "electron-builder": "^24.13.3",
-    "asar": "^3.2.0",
-    "electron-reloader": "^1.2.3"
+    "electron": "^22.3.27",
+    "electron-builder": "^24.13.3"
   },
   "build": {
-    "appId": "com.rongcheng.shopmulti",
     "productName": "荣诚商家多开工具",
-    "publish": null, 
-    "copyright": "Copyright © 2025 ${author}",
-    "directories": {
-      "output": "dist",
-      "buildResources": "build"
-    },
+    "appId": "com.rongcheng.tool",
     "asar": true,
-    "compression": "maximum",
+    "directories": {
+      "output": "release"
+    },
     "mac": {
-      "target": [
-        {
-          "target": "dmg",
-          "arch": ["x64", "arm64"]
-        }
-      ],
-      "icon": "assets/icon.icns",
       "hardenedRuntime": true,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
       "gatekeeperAssess": false,
-      "category": "public.app-category.business"
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
     },
     "win": {
-      "target": "nsis",
-      "icon": "assets/icon.ico",
-      "requestedExecutionLevel": "highestAvailable"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
     },
-    "files": [
-      "main.js",
-      "preload.js",
-      "renderer/**/*",
-      "assets/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
-      "license": "LICENSE.txt",
-      "artifactName": "${productName}-${version}-${arch}-setup.exe"
+      "perMachine": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     }
   }
 }
